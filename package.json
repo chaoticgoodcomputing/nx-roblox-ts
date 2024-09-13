@@ -1,0 +1,15 @@
+{
+  "name": "@cgc/nx-roblox-ts",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {},
+  "private": true,
+  "dependencies": {
+    "@nx/plugin": "19.7.3"
+  },
+  "devDependencies": {
+    "@nx/devkit": "19.7.3",
+    "@nx/workspace": "19.7.3",
+    "nx": "19.7.3"
+  }
+}
