@@ -1,4 +1,4 @@
-# RobloxTs
+# NxRobloxts
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
@@ -8,7 +8,7 @@ Run `npx nx graph` to visually explore what got created. Now, let's get you up t
 
 ## Finish your CI setup
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/PPAvABWpc1)
+[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/RWRjnHcTnQ)
 
 
 ## Run tasks
