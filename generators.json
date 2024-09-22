@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "place": {
+      "factory": "./src/generators/place/generator",
+      "schema": "./src/generators/place/schema.json",
+      "description": "place generator"
+    }
+  }
+}
