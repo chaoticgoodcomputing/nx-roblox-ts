@@ -27,7 +27,8 @@ export async function projectGenerator(
   console.log("Running roblox-ts template creation...");
   
   // Package manager hard-set to npm, since it appears Yarn 2+ and PNPM may have
-  // undefined behavior when used in a monorepo context.
+  // behavior when used in a monorepo context that would be tricky to determine
+  // from inside the package context.
   //
   // This is somewhat mitigated by the fact that node_modules is deleted after
   // the installation occurs, allowing the user to use their preferred package

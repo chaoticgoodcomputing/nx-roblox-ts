@@ -4,6 +4,11 @@
       "factory": "./src/generators/project/generator",
       "schema": "./src/generators/project/schema.json",
       "description": "Generates a roblox-ts template project adapted for NX."
+    },
+    "init": {
+      "factory": "./src/generators/init/generator",
+      "schema": "./src/generators/init/schema.json",
+      "description": "init generator"
     }
   }
 }

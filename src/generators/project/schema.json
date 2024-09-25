@@ -4,22 +4,28 @@
   "title": "Creates a new Roblox-TS place",
   "type": "object",
   "properties": {
+    "projectType": {
+      "type": "string",
+      "description": "Type of project provided to create-roblox-ts",
+      "x-prompt": {
+        "message": "Which language should the project use?",
+        "type": "list",
+        "items": [
+          "place",
+          "model",
+          "plugin",
+          "package"
+        ]
+      }
+    },
     "name": {
       "type": "string",
-      "description": "",
-      "$default": {
-        "$source": "argv",
-        "index": 0
-      },
-      "x-prompt": "What name would you like to use?"
+      "description": "Name of the project",
+      "x-prompt": "What is the name of this project? (alphaumeric with dashes or underscores)"
     },
     "dir": {
       "type": "string",
       "description": "Parent directory of new Roblox Place",
-      "$default": {
-        "$source": "argv",
-        "index": 1
-      },
       "x-prompt": "What parent directory should the new project be placed in?"
     }
   },
