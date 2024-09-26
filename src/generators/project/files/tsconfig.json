@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "out",
+		"baseUrl": "src",
+		"incremental": true,
+    "typeRoots": ["node_modules/@rbxts"],
+		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo"
+	}
+}

@@ -1,3 +1,1 @@
-export interface InitGeneratorSchema {
-  name: string;
-}
+export interface InitGeneratorSchema {}

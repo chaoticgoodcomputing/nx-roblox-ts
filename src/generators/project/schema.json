@@ -11,7 +11,7 @@
         "message": "Which language should the project use?",
         "type": "list",
         "items": [
-          "place",
+          "game",
           "model",
           "plugin",
           "package"

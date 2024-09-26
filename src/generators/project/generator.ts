@@ -12,6 +12,7 @@ import * as fs from 'fs';
 import { PlaceGeneratorSchema as ProjectGeneratorSchema } from './schema';
 import { exec, execSync, spawn } from 'child_process';
 
+
 export async function projectGenerator(
   tree: Tree,
   options: ProjectGeneratorSchema
@@ -25,15 +26,27 @@ export async function projectGenerator(
   });
 
   console.log("Running roblox-ts template creation...");
+
+  // Update package.json with this workspace directory
+  const currentPackageJson = readJson(tree, "./package.json");
+  if (
+    !currentPackageJson.workspaces
+    || !currentPackageJson.workspaces.includes(projectRoot)
+  ) {
+    currentPackageJson.workspaces = [
+      ...(currentPackageJson.workspaces || []),
+      projectRoot
+    ];
+    writeJson(tree, "./package.json", currentPackageJson);
+  }
   
-  // Package manager hard-set to npm, since it appears Yarn 2+ and PNPM may have
-  // behavior when used in a monorepo context that would be tricky to determine
-  // from inside the package context.
-  //
-  // This is somewhat mitigated by the fact that node_modules is deleted after
-  // the installation occurs, allowing the user to use their preferred package
-  // manager.
-  var packageManager = "npm";
+  var packageManager = "npm"
+  if (tree.exists("yarn.lock")) {
+    packageManager = "yarn"
+  }
+  else if (tree.exists("pnpm-lock.yaml")) {
+    packageManager = "pnpm"
+  }
 
   const command = `
     node node_modules/create-roblox-ts/out/index.js \\
@@ -44,7 +57,7 @@ export async function projectGenerator(
       --vscode true \\
       --packageManager ${packageManager} \\
       --skipBuild \\
-      place
+      ${options.projectType}
   `;
 
   // Execute commands
@@ -55,13 +68,31 @@ export async function projectGenerator(
     return error.stdout;
   }
 
-  // TODO: Find some way to prevent the project from installing node_modules.
-  tree.delete(`${projectRoot}/node_modules`);
-  tree.delete(`${projectRoot}/package-lock.json`);
+  // Change name for rojo configuration, since it comes close to conflicting with
+  // NX (if not literally then, at the very least, conceptually)
   tree.rename(
     `${projectRoot}/default.project.json`,
     `${projectRoot}/default.rojo.json`
   )
+
+  // Load file overrides
+  generateFiles(tree, path.join(__dirname, 'files'), projectRoot, options);
+
+  // Calculate distance between project and root directories
+  const rbxtsConfigRelativePath = path.relative(projectRoot, `${tree.root}/tsconfig.rbxts.json`);
+
+  // Update tsconfig.json to inherit from root tsconfig.rbxts.json
+  updateJson(tree, `${projectRoot}/tsconfig.json`, (json) => {
+    json.extends = rbxtsConfigRelativePath;
+    return json;
+  });
+
+  // Remove scripts from package.json
+  // updateJson(tree, `${projectRoot}/package.json`, (json) => {
+  //   json.scripts = {};
+  //   return json;
+  // });
+
 
   await formatFiles(tree);
 }
