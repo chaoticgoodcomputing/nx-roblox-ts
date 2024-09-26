@@ -6,6 +6,7 @@ import {
   writeJson,
   updateJson,
   Tree,
+  writeJsonFile,
 } from '@nx/devkit';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -39,6 +40,11 @@ export async function projectGenerator(
     ];
     writeJson(tree, "./package.json", currentPackageJson);
   }
+
+  const updatedPackageJson = readJson(tree, `./package.json`);
+  if (!updatedPackageJson.workspaces.includes(projectRoot)) {
+    throw new Error("Failed to add project to package.json workspaces");
+  }
   
   var packageManager = "npm"
   if (tree.exists("yarn.lock")) {
@@ -54,19 +60,14 @@ export async function projectGenerator(
       --git false \\
       --eslint true \\
       --prettier false \\
-      --vscode true \\
+      --vscode false \\
       --packageManager ${packageManager} \\
       --skipBuild \\
       ${options.projectType}
   `;
 
   // Execute commands
-  try {
-    execSync(command, { stdio: 'pipe', encoding: 'utf-8' });
-  } catch (error) {
-    console.error('Error executing command:', error);
-    return error.stdout;
-  }
+  execSync(command, { stdio: 'pipe', encoding: 'utf-8' });
 
   // Change name for rojo configuration, since it comes close to conflicting with
   // NX (if not literally then, at the very least, conceptually)
@@ -88,11 +89,10 @@ export async function projectGenerator(
   });
 
   // Remove scripts from package.json
-  // updateJson(tree, `${projectRoot}/package.json`, (json) => {
-  //   json.scripts = {};
-  //   return json;
-  // });
-
+  updateJson(tree, `${projectRoot}/package.json`, (json) => {
+    json.scripts = {};
+    return json;
+  });
 
   await formatFiles(tree);
 }
