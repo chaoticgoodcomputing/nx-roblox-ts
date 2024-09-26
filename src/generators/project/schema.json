@@ -8,7 +8,7 @@
       "type": "string",
       "description": "Type of project provided to create-roblox-ts",
       "x-prompt": {
-        "message": "Which language should the project use?",
+        "message": "Which base RobloxTS template should be used?",
         "type": "list",
         "items": [
           "game",
@@ -16,20 +16,35 @@
           "plugin",
           "package"
         ]
+      },
+      "$default": {
+        "$source": "argv",
+        "index": 0
       }
     },
     "name": {
       "type": "string",
       "description": "Name of the project",
-      "x-prompt": "What is the name of this project? (alphaumeric with dashes or underscores)"
+      "x-prompt": "What is the name of this project? (alphaumeric with dashes or underscores)",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      }
     },
     "dir": {
       "type": "string",
-      "description": "Parent directory of new Roblox Place",
-      "x-prompt": "What parent directory should the new project be placed in?"
+      "description": "Parent directory of the new project",
+      "x-prompt": "What parent directory should the new project be placed in?",
+      "pattern": "^[a-zA-Z0-9_/\\-]+$",
+      "$default": {
+        "$source": "argv",
+        "index": 2
+      }
     }
   },
   "required": [
+    "projectType",
     "name",
     "dir"
   ]
